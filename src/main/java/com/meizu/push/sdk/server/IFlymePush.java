@@ -236,6 +236,9 @@ public class IFlymePush extends HttpClient {
 
             VarnishedMessageJson messageJson = new VarnishedMessageJson(noticeBarInfo, noticeExpandInfo, clickTypeInfo, pushTimeInfo, advanceInfo);
             addParameter(body, "messageJson", JSON.toJSONString(messageJson));
+            if (message.getRestrictedPackageNames() != null) {
+                addParameter(body, "restrictedPackageNames", array2Str(message.getRestrictedPackageNames()));
+            }
         }
 
         HttpResult httpResult = super.post(useSSL, _url, body.toString());
@@ -392,7 +395,9 @@ public class IFlymePush extends HttpClient {
 
             VarnishedMessageJson messageJson = new VarnishedMessageJson(noticeBarInfo, noticeExpandInfo, clickTypeInfo, pushTimeInfo, advanceInfo);
             addParameter(body, "messageJson", JSON.toJSONString(messageJson));
-
+            if (message.getRestrictedPackageNames() != null) {
+                addParameter(body, "restrictedPackageNames", array2Str(message.getRestrictedPackageNames()));
+            }
         }
 
         HttpResult httpResult = super.post(useSSL, _url, body.toString());
@@ -485,7 +490,9 @@ public class IFlymePush extends HttpClient {
 
             VarnishedMessageJson messageJson = new VarnishedMessageJson(noticeBarInfo, noticeExpandInfo, clickTypeInfo, pushTimeInfo, advanceInfo);
             addParameter(body, "messageJson", JSON.toJSONString(messageJson));
-
+            if (message.getRestrictedPackageNames() != null) {
+                addParameter(body, "restrictedPackageNames", array2Str(message.getRestrictedPackageNames()));
+            }
         }
 
         HttpResult httpResult = super.post(useSSL, _url, body.toString());
@@ -676,7 +683,9 @@ public class IFlymePush extends HttpClient {
             VarnishedMessageJson messageJson = new VarnishedMessageJson(noticeBarInfo,
                     noticeExpandInfo, clickTypeInfo, pushTimeInfo, advanceInfo,msgInfo.getExtra());
             addParameter(body, "messageJson", JSON.toJSONString(messageJson));
-
+            if (message.getRestrictedPackageNames() != null) {
+                addParameter(body, "restrictedPackageNames", array2Str(message.getRestrictedPackageNames()));
+            }
             if (UserType.PUSHID == userType) {
                 _url = SystemConstants.PUSH_APPID_VARNISHED_PUSHIDS;
             } else if (UserType.ALIAS == userType) {
@@ -769,6 +778,17 @@ public class IFlymePush extends HttpClient {
         } else {
             return ResultPack.failed(code, msg);
         }
+    }
+
+    private static String array2Str(String[] restrictedPackageNames) {
+        if (restrictedPackageNames == null||restrictedPackageNames.length==0) {
+            return null;
+        }
+        StringBuilder sb = new StringBuilder(restrictedPackageNames[0]);
+        for (int i = 1; i < restrictedPackageNames.length; ++i) {
+            sb.append(",").append(restrictedPackageNames[i]);
+        }
+        return sb.toString();
     }
 
 
